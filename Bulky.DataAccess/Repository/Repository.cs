@@ -15,6 +15,7 @@ namespace Bulky.DataAccess.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
+        // internal the type or member can be accessed by the same class or a derived class.
         internal DbSet<T> dbSet;
         public Repository(ApplicationDbContext db)
         {
