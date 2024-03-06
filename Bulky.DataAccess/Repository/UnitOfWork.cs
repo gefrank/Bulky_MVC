@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bulky.DataAccess.Repository
 {
     /// <summary>
-    /// UnitOfWork implements the repositories and the IUnitOfWork contract forces the implentation of Product and Category
+    /// UnitOfWork implements the repositories, and the IUnitOfWork contract forces the implentation of Product, Category and Company
     /// as well as Save
     /// </summary>
     public class UnitOfWork : IUnitOfWork
@@ -17,13 +17,14 @@ namespace Bulky.DataAccess.Repository
         private ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
-
+        public ICompanyRepository Company { get; private set; }
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             // UnitOfWork has the implementation for CategoryRepository and ProductRepository
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
+            Company = new CompanyRepository(_db);
         }
         
         public void Save()
