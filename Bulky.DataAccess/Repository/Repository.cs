@@ -36,9 +36,26 @@ namespace Bulky.DataAccess.Repository
             // _db.Categories.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        /// <summary>
+        /// Added tracked so EF doesn't automatically change a returned entity unless specifically call an update to it.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="includeProperties"></param>
+        /// <param name="tracked"></param>
+        /// <returns></returns>
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
+
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
@@ -48,12 +65,18 @@ namespace Bulky.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
+
             return query.FirstOrDefault();
         }
+    
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }            
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 //Adds the navigation to the FK Tables
