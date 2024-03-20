@@ -8,6 +8,8 @@ namespace Bulky.DataAccess.Data
     /// <summary>
     /// Note using to use Identity we need to implement IdentityDbContext instead of the simple DbContext and then
     /// you have to remember to include the base.OnModelCreating(modelBuilder);
+    /// The classes added to the DbSet here and anything seeded are generated as part of database migrations "add-migration migrationName" and pushed to    
+    /// the database upon "database-update" commands in the Package Manager Console.
     /// </summary>
     public class ApplicationDbContext :  IdentityDbContext<IdentityUser>
     {
@@ -21,6 +23,8 @@ namespace Bulky.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
