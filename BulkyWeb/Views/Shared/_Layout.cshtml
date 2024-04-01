@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿<!-- If you want something in the View you have to explicitly inject it 
+     in this case we need this to access the session variable-->
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -50,14 +55,18 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a>
+                                    </li>
                                 </ul>
                             </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i> &nbsp; 
+                                @*ViewComponent is automatically injected here.*@
+                                @await Component.InvokeAsync("ShoppingCart")
                             </a>
-                        </li>
+                        </li>                        
                     </ul>
                     <partial name="_loginPartial" />
                 </div>

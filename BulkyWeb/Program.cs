@@ -30,6 +30,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+// Session is not added by default, you have to configure it yourself if you want it. So the below two items are needed.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 // So app works with the new Identity Razor Pages
 builder.Services.AddRazorPages();
 
@@ -61,6 +71,7 @@ app.UseRouting();
 app.UseAuthentication();
 // If user is Authenticated, Authorize the user based on their role.
 app.UseAuthorization();
+app.UseSession(); // GEF note added this in order to use session in Application
 // Also needed to support Razor Pages.
 app.MapRazorPages();
 
