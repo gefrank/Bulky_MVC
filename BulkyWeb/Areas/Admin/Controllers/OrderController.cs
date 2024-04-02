@@ -135,7 +135,9 @@ namespace BulkyWeb.Areas.Admin.Controllers
             OrderVM.OrderDetail = _unitOfWork.OrderDetail
                 .GetAll(x => x.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
-            var domain = "https://localhost:7238/";
+            //var domain = "https://localhost:7238/";
+            // Dynamic Domain
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
 
             var options = new SessionCreateOptions
             {

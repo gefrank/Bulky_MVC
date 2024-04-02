@@ -113,7 +113,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-                var domain = "https://localhost:7238/";
+                //var domain = "https://localhost:7238/";
+                // Dynamic Domain
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
                 // It is a regular customer
                 // ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
                 ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
@@ -121,7 +124,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 var options = new SessionCreateOptions
                 {
                     //SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ ShoppingCartVM.OrderHeader.Id }",
-                    CancelUrl = domain + "customerr/cart/index",
+                    CancelUrl = domain + "customer/cart/index",
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
                 };

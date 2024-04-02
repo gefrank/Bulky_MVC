@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Bulky.Utility;
 using Stripe;
+using Bulky.DataAccess.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// You have to dependency inject the DbInitializer to use it.
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 // So app works with the new Identity Razor Pages
 builder.Services.AddRazorPages();
@@ -72,6 +75,8 @@ app.UseAuthentication();
 // If user is Authenticated, Authorize the user based on their role.
 app.UseAuthorization();
 app.UseSession(); // GEF note added this in order to use session in Application
+// Invoking SeedDatabase in our pipeline. Invoked everytime the application is restarted.
+SeedDatabase();
 // Also needed to support Razor Pages.
 app.MapRazorPages();
 
@@ -80,3 +85,12 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
