@@ -55,6 +55,15 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //need to implement and inject emailsender.
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+//  GEF Added Google logon
+var configuration = builder.Configuration;
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
