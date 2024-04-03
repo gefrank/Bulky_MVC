@@ -10,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repository
 {
-    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+    public class ProductImageRepository : Repository<ProductImage>, IProductImageRepository
     {
         private ApplicationDbContext _db;
         /// <summary>
         /// We want to pass this implentation to all the base classes
         /// </summary>
         /// <param name="db"></param>
-        public ApplicationUserRepository(ApplicationDbContext db) : base(db) //whatever db context we get here, is passed to the repository
+        public ProductImageRepository(ApplicationDbContext db) : base(db) //whatever db context we get here, is passed to the repository
         {
             _db = db;
         }
 
-        public void Update(ApplicationUser applicationUser)
+        public void Update(ProductImage obj)
         {
-           _db.ApplicationUsers.Add(applicationUser);
+           _db.ProductImages.Update(obj);
         }
     }
 }

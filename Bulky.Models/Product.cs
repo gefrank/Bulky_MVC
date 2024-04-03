@@ -46,8 +46,10 @@ namespace Bulky.Models
         [ForeignKey("CategoryId")]
         [ValidateNever]
         public Category Category { get; set; }
+
+        // Tells EF Core about the one to many relationship between product and product image.
         [ValidateNever]
-        public string ImageUrl { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
 
     }
 }

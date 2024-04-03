@@ -46,10 +46,11 @@ namespace Bulky.DataAccess.Repository
                 objFromDb.Description = obj.Description;
                 objFromDb.Category = obj.Category;
                 objFromDb.Author = obj.Author;
-                if (objFromDb.ImageUrl != null)
-                {
-                    objFromDb.ImageUrl = obj.ImageUrl;
-                }
+                objFromDb.ProductImages = obj.ProductImages; //EF COre will handle all the updates to this table through this one call.
+                //if (objFromDb.ImageUrl != null)
+                //{
+                //    objFromDb.ImageUrl = obj.ImageUrl;
+                //}
                 _db.Products.Update(objFromDb);
             }           
         }
